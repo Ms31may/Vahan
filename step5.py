@@ -13,7 +13,7 @@ import datetime
 from step4 import transFormDf
 #######################################################################################################################################################################
 
-df_combined = pd.DataFrame(columns = ['S No', 'data_extrcn_date', 'data_extrcn_epoch', 'state', 'RTO', 'Maker',
+df_combined_all = pd.DataFrame(columns = ['S No', 'data_extrcn_date', 'data_extrcn_epoch', 'state', 'RTO', 'Maker',
        'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT',
        'NOV', 'DEC', 'TOTAL'])
 
@@ -30,8 +30,8 @@ def remover(my_string = ""):
 #######################################################################################################################################################################
 config = configparser.ConfigParser()
 config.readfp(open(r'config.ini'))
-def clickstep3(driver,df_xpath,state_loop_counter, state):
-    global df_combined
+def clickstep5(driver,df_xpath,state_loop_counter, state):
+    global df_combined_all
     dummyState = filter_selector_2x2times(driver,df_xpath['absXpath']['State dropdown'],df_xpath['absXpath']['state'+str(state_loop_counter)])
     dummystate1 = remover(dummyState)
     print(dummystate1)
@@ -55,7 +55,7 @@ def clickstep3(driver,df_xpath,state_loop_counter, state):
                 TWOwhIC_checkbox_xpath = df_xpath['relXpath']['2WH(IC) checkbox']
                 TWOwhNT_checkbox_xpath = df_xpath['relXpath']['2WH(NT) checkbox']
                 TWOwhT_checkbox_xpath = df_xpath['relXpath']['2WH(T) checkbox']
-                electric_checkbox_xpath = df_xpath['absXpath']['electric(BOV) checkbox']
+                # electric_checkbox_xpath = df_xpath['absXpath']['electric(BOV) checkbox']
 
                 
                 driver.find_element("xpath", topright_refresh_xpath).click()
@@ -63,11 +63,6 @@ def clickstep3(driver,df_xpath,state_loop_counter, state):
                 
                                                             #wait 1.5 sec in case anything is running
 
-                #click on Fuel: ELectric(BOV) in teh left tray
-
-                time.sleep(1)
-                driver.find_element("xpath", electric_checkbox_xpath).click()
-                time.sleep(1)
                 
                                                                     #wait 1 sec in case anything is running
 
@@ -108,7 +103,7 @@ def clickstep3(driver,df_xpath,state_loop_counter, state):
                 time.sleep(5)
                 newName = newName1
             except Exception as e:
-                # print(e)
+                print(e)
                 driver_open_time, driver = openWebpage(df_xpath)
                 driver = clickstep2(driver,df_xpath)
                 dummyState = filter_selector_2x2times(driver,df_xpath['absXpath']['State dropdown'],df_xpath['absXpath']['state'+str(state_loop_counter)])
@@ -117,20 +112,20 @@ def clickstep3(driver,df_xpath,state_loop_counter, state):
                 continue
         
             df = transFormDf(newName, dummyState, dummyRTO, download_EPOCH)
-            df_combined = pd.concat([df_combined, df], ignore_index=True)
-            print(df_combined.tail(10))
+            df_combined_all = pd.concat([df_combined_all, df], ignore_index=True)
+            print(df_combined_all.tail(10))
             ctd =ctd+1
             if ctd == 10000000:
                 break
 
                     #add state column and move it to left after maker column
-        df_combined.to_csv(f'df_combined_allBike_ev__{dummyState}.csv')
-        return (dummystate1  == state)
-  
+        df_combined_all.to_csv(f'df_combined_allBike_{dummyState}.csv')
+        return dummystate1  == state
+
+        
 
     else:
         pass
-
     
     
 ##############################################################################################################################################################1
