@@ -35,7 +35,7 @@ def clickstep3(driver,df_xpath,state_loop_counter, state, ty):
     dummyState = filter_selector_2x2times(driver,df_xpath['absXpath']['State dropdown'],df_xpath['absXpath']['state'+str(state_loop_counter)])
     dummystate1 = remover(dummyState)
     print(dummystate1)
-    if dummystate1  == state:
+    if dummystate1  in state:
 
 
         time.sleep(1)

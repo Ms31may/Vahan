@@ -14,7 +14,7 @@ print('Andaman  Nicobar Island','Andhra Pradesh','Arunachal Pradesh',
  'Mizoram','Nagaland','Odisha','Punjab','Puducherry','Rajasthan','Sikkim','Tamil Nadu','Tripura','Uttarakhand','Uttar Pradesh','West Bengal')
 
 
-state = input("Enter the state")
+state = ['Delhi']
 ty= int(input("1 for Ev and 2 for non-ev"))
 
 
